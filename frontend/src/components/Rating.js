@@ -7,14 +7,14 @@ const Rating = ({value, text, color}) => {
     while(value > 0) {
         if(value >= 1) {
             stars.push(
-                <span>
+                <span key={stars.length}> 
                     <i style={{color}}className='fas fa-star'></i>
                 </span>
             )
         } 
         else {
             stars.push(
-                <span style={{color}}>
+                <span key={stars.length} style={{color}}>
                     <i className='fas fa-star-half-alt'></i>
                 </span>
             )
@@ -24,12 +24,12 @@ const Rating = ({value, text, color}) => {
 
     while(stars.length !== 5) {
         stars.push(
-            <span style={{color}}>
+            <span key={stars.length} style={{color}}>
                 <i className='far fa-star'></i>
             </span>
         )
     }
-    stars.push(<span>{text && ` ${text}`}</span>)
+    stars.push(<span key={stars.length}>{text && ` ${text}`}</span>)
 
     return (
         <div className='rating'>
