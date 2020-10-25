@@ -10,8 +10,8 @@ const ProductScreen = ({match}) => {
     const symbol = '₹'
     return (
         <>
-            <Link className='btn btn-light my-3' to='/'>
-                Go Back
+            <Link to='/'>
+                <Button variant="outline-dark my-3"> Go back </Button>
             </Link>
             <Row>
                 <Col md = {6}>
@@ -58,7 +58,6 @@ const ProductScreen = ({match}) => {
                     </Card>
                 </Col>
             </Row>
-            Product
         </>
     )
 }
