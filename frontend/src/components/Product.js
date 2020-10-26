@@ -7,7 +7,7 @@ const Product = ({ product }) => {
     const symbol = '₹'
     return (
         <Card className='my-3 p-3 rounded'>
-            <Link to={`/products/${product._id}`}>
+            <Link to={`/product/${product._id}`}>
                 <Card.Img src={product.image} variant='top' />
             </Link>
 
