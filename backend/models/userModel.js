@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const becrypt = require('bcryptjs');
 const Product = require('./productModel');
+const bcrypt = require('bcryptjs')
 
 const userSchema = mongoose.Schema({
     name: {
@@ -44,6 +45,28 @@ const userSchema = mongoose.Schema({
 userSchema.methods.matchPassword = async function(enteredPassword) {
     return await becrypt.compare(enteredPassword, this.password)
 }
+
+userSchema.methods.formatProp = function () {
+    const user = this;
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.createdAt
+    delete userObject.deletedAt
+    delete userObject.updatedAt
+    return userObject
+}
+
+// Hash the plaintext password before saving
+userSchema.pre('save', async function (next) {
+    const user = this
+    // console.log('Just before saving')
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 10);
+    }
+    next()
+})
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
