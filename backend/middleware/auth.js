@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 
 const auth = async(req, res, next) => {
-    
     try {
         if(req.header('Authorization') && req.header('Authorization').startsWith('Bearer'))  {
             // console.log('Hello')
@@ -25,6 +24,7 @@ const auth = async(req, res, next) => {
         
     } catch (e) {
         // console.log(e)
+        console.log(e)
         res.status(401).send({error: 'Please Authenticate'})
     }
 }

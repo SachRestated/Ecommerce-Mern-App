@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 
 
 const Rating = ({value, text, color}) => {
+    let ex = value
     const stars = []
-    while(value > 0) {
-        if(value >= 1) {
+    while(ex > 0) {
+        if(ex >= 1) {
             stars.push(
                 <span key={stars.length}> 
                     <i style={{color}}className='fas fa-star'></i>
@@ -19,7 +20,7 @@ const Rating = ({value, text, color}) => {
                 </span>
             )
         }
-        value -= 1;
+        ex -= 1;
     }
 
     while(stars.length !== 5) {
@@ -42,8 +43,7 @@ Rating.defaultProps = {
     color: '#f8d825'
 }
 
-Rating.propTypes = {
-    value: PropTypes.number.isRequired,
+Rating.propTypes = {    
     text: PropTypes.string.isRequired,
     color: PropTypes.string
 }

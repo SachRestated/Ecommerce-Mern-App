@@ -9,11 +9,10 @@ const CartScreen = ({match, location, history}) => {
     const productId = match.params.id
     const qty = location.search ? location.search.split('=')[1] : 1
     const dispatch = useDispatch()
-
+    console.log(productId, qty)
     const {cartItems} = useSelector(state => state.cart)
     const symbol = '₹'
     useEffect(() => {
-        console.log('Hello', productId)
         if (productId) {
             dispatch(addToCart(productId, qty))
         }
@@ -24,7 +23,7 @@ const CartScreen = ({match, location, history}) => {
     }   
 
     const checkoutHandler = () => {
-        history.push('login?redirect=shipping')
+        history.push('/login?redirect=shipping')
     }
 
     return (

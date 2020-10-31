@@ -55,11 +55,40 @@ const registerUser = asyncHandler(async(req, res) => {
 // get private user profile
 const getUserProfile = asyncHandler(async(req, res) => {
     const user = req.user
+    console.log(user)
     res.send(user.formatProp())
+}) 
+
+const updateUserProfile = asyncHandler(async(req, res) => {
+    const user = req.user
+
+    if(user) {
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        if(req.body.password) {
+            user.password = req.body.password
+        }
+        const updatedUser = await user.save()
+
+        res.send({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+            token: generateToken(updatedUser._id)
+        })
+    } else {
+
+        res.status(400)
+        throw new Error('User not found')
+    }
+
+    
 }) 
 
 module.exports = {
     authUser,
     getUserProfile,
-    registerUser
+    registerUser,
+    updateUserProfile
 }
