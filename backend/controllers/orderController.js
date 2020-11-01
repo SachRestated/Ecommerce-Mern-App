@@ -45,7 +45,31 @@ const getOrderById = asyncHandler(async (req, res) => {
     }
 })
 
+//Update order to paid
+const updateOrderToPaid = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id)
+
+    if (order) {
+        order.isPaid = true
+        order.paidAt = Date.now()
+        order.paymentResult = {
+            id: req.body.id,
+            status: req.body.status,
+            update_time: req.body.update_time,
+            email_address: req.body.payer.email_address 
+        }
+
+        const updatedOrder = await order.save()
+
+        res.send(updatedOrder)
+    } else {
+        res.status(400)
+        throw new Error('Order Not Found')
+    }
+})
+
 module.exports = {
     addOrderItems,
-    getOrderById
+    getOrderById,
+    updateOrderToPaid
 }
