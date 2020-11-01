@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const Order = require('../models/productModel')
+const Order = require('../models/orderModel')
 
 //Create New Order
 const addOrderItems = asyncHandler(async (req, res) => {
@@ -18,7 +18,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     } else {
         const order = new Order({
             orderItems,
-            user = req.user._id,
+            user: req.user._id,
             shippingAddress,
             paymentMethod,
             itemsPrice,
@@ -32,6 +32,19 @@ const addOrderItems = asyncHandler(async (req, res) => {
     }
 })
 
+//get Order by Id
+const getOrderById = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id).populate('user', 'name email')
+
+    if (order) {
+        res.send(order)
+    } else {
+        res.status(400)
+        throw new Error('Order Not Found')
+    }
+})
+
 module.exports = {
-    addOrderItems
+    addOrderItems,
+    getOrderById
 }

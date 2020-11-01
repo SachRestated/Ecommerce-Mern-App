@@ -1,22 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
+import {createOrder} from '../actions/orderAction'
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = ({history}) => {
     const cart = useSelector(state => state.cart)
     const symbol = '₹'
+    const dispatch = useDispatch()
 
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + Math.floor(80 * item.qty * item.price), 0)
-    console.log(cart.itemsPrice)
     cart.shippingPrice = cart.itemsPrice > 10000 ? 0 : 200
     cart.taxPrice = Number((0.15 * cart.itemsPrice).toFixed(2))
     cart.totalPrice = cart.itemsPrice + cart.taxPrice + cart.shippingPrice
 
+    const {order, success, error} = useSelector(state => state.orderCreate)
+
+    useEffect(() => {
+        if (success) {
+            history.push(`/order/${order._id}`)
+        }
+        //eslint-disable-next-line
+    }, [success, history])
+
     const placeOrderHandler = () => {
-        console.log('order')
+        dispatch(createOrder({
+            orderItems: cart.cartItems,
+            shippingAddress: cart.shippingAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice, 
+            shippingPrice: cart.shippingPrice, 
+            taxPrice: cart.taxPrice, 
+            totalPrice: cart.totalPrice, 
+
+        }))
     }
 
     return (
@@ -78,19 +97,19 @@ const PlaceOrderScreen = () => {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Items</Col>
-                                    <Col>{symbol}{cart.itemsPrice}</Col>
+                                    <Col>{symbol}{cart.itemsPrice.toLocaleString('en-IN')}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Shipping</Col>
-                                    <Col>{symbol}{cart.shippingPrice}</Col>
+                                    <Col>{symbol}{cart.shippingPrice.toLocaleString('en-IN')}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Tax</Col>
-                                    <Col>{symbol}{cart.taxPrice}</Col>
+                                    <Col>{symbol}{cart.taxPrice.toLocaleString('en-IN')}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
@@ -98,6 +117,10 @@ const PlaceOrderScreen = () => {
                                     <Col>Total</Col>
                                     <Col>{symbol}{cart.totalPrice.toLocaleString('en-IN')}</Col>
                                 </Row>
+                            </ListGroup.Item>
+
+                            <ListGroup.Item>
+                                {error && <Message variant='danger'>{error}</Message>}
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Button type='button' className='btn-block'

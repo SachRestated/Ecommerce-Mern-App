@@ -72,7 +72,7 @@ const CartScreen = ({match, location, history}) => {
                     <ListGroup variant='flush'> 
                         <ListGroup.Item>
                             <h2>Subtotal ({cartItems.reduce((acc, item) => acc + Number(item.qty), 0)}) Items</h2>
-                            {symbol}{Math.floor(cartItems.reduce((acc, item) => acc + (Number(item.qty) * Number(item.price) * 80), 0))}
+                            {symbol} {Math.floor(cartItems.reduce((acc, item) => acc + (Number(item.qty) * Number(item.price) * 80), 0)).toLocaleString('en-IN')}
                         </ListGroup.Item>
 
                         <ListGroup.Item>
