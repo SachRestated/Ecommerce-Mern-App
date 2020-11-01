@@ -26,16 +26,17 @@ const PlaceOrderScreen = ({history}) => {
     }, [success, history])
 
     const placeOrderHandler = () => {
-        dispatch(createOrder({
+        const obj = {
             orderItems: cart.cartItems,
             shippingAddress: cart.shippingAddress,
             paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice, 
-            shippingPrice: cart.shippingPrice, 
-            taxPrice: cart.taxPrice, 
-            totalPrice: cart.totalPrice, 
-
-        }))
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            taxPrice: cart.taxPrice,
+            totalPrice: cart.totalPrice,
+        }
+        console.log(obj)
+        dispatch(createOrder(obj))
     }
 
     return (
