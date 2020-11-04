@@ -1,4 +1,3 @@
-const express = require('express')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const generateToken = require('../utils/generateToken')
@@ -55,7 +54,6 @@ const registerUser = asyncHandler(async(req, res) => {
 // get private user profile
 const getUserProfile = asyncHandler(async(req, res) => {
     const user = req.user
-    console.log(user)
     res.send(user.formatProp())
 }) 
 
@@ -86,9 +84,16 @@ const updateUserProfile = asyncHandler(async(req, res) => {
     
 }) 
 
+//get all users - for admin only
+const getUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({})
+    res.send(users)
+}) 
+
 module.exports = {
     authUser,
     getUserProfile,
     registerUser,
-    updateUserProfile
+    updateUserProfile,
+    getUsers
 }
