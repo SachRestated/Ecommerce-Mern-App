@@ -1,33 +1,46 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {Row, Col} from 'react-bootstrap'
 import Product from '../components/Product' 
 import Loader from '../components/Loader' 
+import Paginate from '../components/Paginate'
+import Meta from '../components/Meta'
+import ProductCarousel from '../components/ProductCarousel'
 import Message from '../components/Message' 
 
 import { listProducts } from '../actions/productAction'
 
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
+    const keyword = match.params.keyword
+
+    const pageNumber = match.params.pageNumber || 1
 
     const dispatch = useDispatch()
 
     const productList = useSelector(state => state.productList)
     console.log(productList)
-    const { loading, error, products} = productList
+    const { loading, error, products, pages, page} = productList
+
+
 
     useEffect(() => {
-        dispatch(listProducts())
-    }, [dispatch])
+        dispatch(listProducts(keyword, pageNumber))
+    }, [dispatch, keyword, pageNumber])
 
     return (
         <>
+            <Meta />
+                
+            {!keyword ? <ProductCarousel/> : <Link to='/' className='btn btn-dark'>Go back</Link> }
             <h1>Latest Products</h1>
             {
                 loading ? 
                     <Loader /> : 
                 error ? 
                     <Message variant={'danger'} children={error}/> : 
+                    <>
                     <Row>
                         {products.map( product => {
                             return (
@@ -37,9 +50,9 @@ const HomeScreen = () => {
                             )   
                         })}
                     </Row>  
-
+                    <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''}/>
+                    </>
             }
-            
         </>
     )
 }
