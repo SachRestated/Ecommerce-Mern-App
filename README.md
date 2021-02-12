@@ -1,6 +1,7 @@
 # Mern-ECommerce-App
 E-Commerce App using MERN stack and Redux for state management.
 ![](Image-1.png)
+###Features
 * Add to Cart and Payment functionality
 ![](Image-3.png)
 * Paypal Integration to replicate fake payments
