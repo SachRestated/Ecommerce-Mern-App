@@ -155,7 +155,7 @@ const OrderScreen = ({ match, history }) => {
                             </Row>
                         </ListGroup.Item>
                         
-                            {!order.isPaid && (
+                            {!order.isPaid && !userInfo.isAdmin && (
                                 <ListGroup.Item>
                                     {loadingPay && <h1>Hi</h1>}
                                     {!sdkReady ? (

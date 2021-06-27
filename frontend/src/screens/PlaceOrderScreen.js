@@ -9,6 +9,7 @@ import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
 
 const PlaceOrderScreen = ({ history }) => {
+    const symbol = '₹'
     const dispatch = useDispatch()
 
     const cart = useSelector((state) => state.cart)
@@ -103,7 +104,7 @@ const PlaceOrderScreen = ({ history }) => {
                                                         </Link>
                                                     </Col>
                                                     <Col md={4}>
-                                                        {item.qty} x ${item.price} = ${item.qty * item.price}
+                                                        {item.qty} x {symbol}{Math.floor(item.price * 80)} = {symbol}{item.qty * Math.floor(item.price * 80)}
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>
@@ -122,7 +123,7 @@ const PlaceOrderScreen = ({ history }) => {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Items</Col>
-                                    <Col>${cart.itemsPrice}</Col>
+                                    <Col>{symbol}{cart.itemsPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
